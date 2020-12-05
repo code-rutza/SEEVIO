@@ -96,6 +96,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                   Image(
                     image: AssetImage('assets/logo_back.png'),
                     height: MediaQuery.of(context).size.height * 0.18,
+                    semanticLabel: "Seevio logo",
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
