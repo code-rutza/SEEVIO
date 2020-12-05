@@ -82,7 +82,7 @@ class _SeevioHomeState extends State<SeevioHome> {
 
   @override
   Widget build(BuildContext context) {
-    double appWidth = MediaQuery.of(context).size.width;
+    final double appWidth = MediaQuery.of(context).size.width;
     return FutureBuilder(
       future: getSettings(),
       builder: (context, snapshot) {
@@ -93,12 +93,9 @@ class _SeevioHomeState extends State<SeevioHome> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 0,
-                  ),
                   Image(
                     image: AssetImage('assets/logo_back.png'),
-                    height: 200,
+                    height: MediaQuery.of(context).size.height * 0.18,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +113,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                             child: Text(
                               "Romana",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 20, 20, 20),
                                   fontFamily: 'LibreFranklin',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 24),
@@ -143,7 +140,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                             child: Text(
                               "English",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 20, 20, 20),
                                   fontFamily: 'LibreFranklin',
                                   fontWeight: FontWeight.w500,
                                   fontSize: 24),
@@ -160,7 +157,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 10),
                     child: SizedBox(
                       width: appWidth * 0.6,
                       height: appWidth * 0.45,
@@ -174,10 +171,10 @@ class _SeevioHomeState extends State<SeevioHome> {
                               ? "Ce se afla in jurul tau?"
                               : "What's around you?",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 20, 20, 20),
                               fontFamily: 'LibreFranklin',
                               fontWeight: FontWeight.w500,
-                              fontSize: 24),
+                              fontSize: 20),
                         ),
                         onPressed: () async {
                           List<Result> results = await fetchNearbyPlaces(
@@ -194,7 +191,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: SizedBox(
                       width: appWidth * 0.6,
                       height: appWidth * 0.45,
@@ -206,10 +203,10 @@ class _SeevioHomeState extends State<SeevioHome> {
                         child: const Text(
                           "Stop text to speech",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 20, 20, 20),
                               fontFamily: 'LibreFranklin',
                               fontWeight: FontWeight.w500,
-                              fontSize: 24),
+                              fontSize: 20),
                         ),
                         onPressed: () async {
                           await widget.flutterTts.stop();
