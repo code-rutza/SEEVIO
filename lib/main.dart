@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart';
-import 'package:seevio/loading.dart';
-import 'package:seevio/result.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:SEEVIO/loading.dart';
+import 'package:SEEVIO/result.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api.dart';
 
 const SP_KEY_SETTINGS = "bubi";
+bool loaded = false;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
 
 class SeevioHome extends StatefulWidget {
   SeevioHome({Key key, this.flutterTts}) : super(key: key);
-  final FlutterTts flutterTts;
+  final FlutterTts flutterTts; // Text to Speech
 
   @override
   _SeevioHomeState createState() => _SeevioHomeState();
@@ -44,8 +46,13 @@ class SeevioHome extends StatefulWidget {
 
 class _SeevioHomeState extends State<SeevioHome> {
   String locale = "ro-RO";
+  Position position;
+  int undeOAjunsLaTTSPentruPOI = 0; // :)
 
   Future<bool> getSettings() async {
+    /// Get the seetings
+    /// 
+    /// Returns [true] when done
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       String _settings = prefs.getString(SP_KEY_SETTINGS);
@@ -59,24 +66,38 @@ class _SeevioHomeState extends State<SeevioHome> {
       });
     }
 
+    if (loaded) return true;
+
+    // Permissions
+    await Permission.location.request();
+
+    // TTS Setup:
     await widget.flutterTts.setLanguage(locale);
     await widget.flutterTts.setSpeechRate(1.5);
     await widget.flutterTts.setPitch(1.2);
+
+    // Get location
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    await geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position pos) {
+      setState(() {
+        position = pos;
+      });
+    }).catchError((err) => print("[GEOLOC ERROR] $err"));
+
+    loaded = true;
 
     return true;
   }
 
   Future<bool> setSettings() async {
+    /// Save the seetings
+    /// 
+    /// Returns [true] when done
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(SP_KEY_SETTINGS, "$locale&");
     return true;
-  }
-
-  _playT2S(List<Result> resultList) {
-    print(resultList.length);
-    for (int i = 0; i < resultList.length; ++i) {
-      widget.flutterTts.speak(resultList[i].toStringWithLocale(locale));
-    }
   }
 
   @override
@@ -111,7 +132,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                             child: Text(
-                              "Romana",
+                              "Română",
                               style: TextStyle(
                                   color: Color.fromARGB(255, 20, 20, 20),
                                   fontFamily: 'LibreFranklin',
@@ -178,14 +199,21 @@ class _SeevioHomeState extends State<SeevioHome> {
                         ),
                         onPressed: () async {
                           List<Result> results = await fetchNearbyPlaces(
-                            position: Position(
-                              latitude: 46.774514,
-                              longitude: 23.590110,
-                            ),
+                            position: position,
                             radious: 500,
-                            keyword: "bar",
+                            keyword: "restaurant",
                           );
-                          _playT2S(results);
+
+                          while (undeOAjunsLaTTSPentruPOI < results.length) {
+                            var res = await widget.flutterTts
+                                .speak(results[undeOAjunsLaTTSPentruPOI].toStringWithLocale(locale));
+                            if (res == 1) {
+                              ++undeOAjunsLaTTSPentruPOI;
+                            }
+                            if (undeOAjunsLaTTSPentruPOI == results.length) {
+                              undeOAjunsLaTTSPentruPOI = 0;
+                            }
+                          }
                         },
                       ),
                     ),

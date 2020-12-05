@@ -2,13 +2,23 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math' show pi, sin, cos, atan2, sqrt;
 import 'package:geolocator/geolocator.dart';
-import 'package:seevio/result.dart';
+import 'package:SEEVIO/result.dart';
 
+// Pls no ciorderino, ii restricted pe Places pls be kind
 const API_KEY = "AIzaSyCGnsjLXhRfb86sDaOH6X7E3sgAtcaiKd8";
 const BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch";
 
 int getDistance(Position userPos, double lat, double long) {
-  /// https://www.movable-type.co.uk/scripts/latlong.html
+  /// Calculate the distance from the user's current position to the POI's location
+  ///
+  /// [userPos] - User [Position] object
+  /// [lat] - Point Of Interest latitude
+  /// [long] - Point Of Interest longitude
+  ///
+  /// Returns [int] - distance in meters
+  ///
+  /// Explaination: https://www.movable-type.co.uk/scripts/latlong.html
+
   double userLat = userPos.latitude;
   double userLong = userPos.longitude;
 
@@ -31,15 +41,13 @@ int getDistance(Position userPos, double lat, double long) {
 }
 
 String getDirection(Position userPos, double lat, double long) {
-  /// Probabil gresit, vezi chiar codu!
-  /// if (abs(userLat - lat) < threshold) atunci fata sau spate
+  /// Get the direction relative to the user's current position to the POI
   ///
-  /// lat < userLat -> stanga else dreapta
+  /// [userPos] - User [Position] object
+  /// [lat] - Point Of Interest latitude
+  /// [long] - Point Of Interest longitude
   ///
-  /// long < userLong  -> spate else fata
-  assert(userPos != null);
-  assert(lat != null);
-  assert(long != null);
+  /// Returns [String] - left/right/back/front
 
   double userLat = userPos.latitude;
   double userLong = userPos.longitude;
@@ -63,8 +71,16 @@ String getDirection(Position userPos, double lat, double long) {
   }
 }
 
-Future<List> fetchNearbyPlaces(
+Future<List<Result>> fetchNearbyPlaces(
     {Position position, int radious, String keyword}) async {
+  /// Fetch the POIs near the user using the Google Places API
+  /// 
+  /// Param [position] - the user's current position
+  /// Param [radious] - the radious in which we search for places
+  /// Param [keyword], optional - Only return results that match that keyword
+  /// 
+  /// Returns a [List] of [Result]s
+
   double lat = position.latitude;
   double long = position.longitude;
   String url = "";
