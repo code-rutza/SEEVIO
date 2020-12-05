@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     FlutterTts flutterTts = FlutterTts();
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Seevio',
       theme: ThemeData(
         primaryColor: Color.fromRGBO(32, 235, 166, 1.0),
@@ -81,66 +82,140 @@ class _SeevioHomeState extends State<SeevioHome> {
 
   @override
   Widget build(BuildContext context) {
+    double appWidth = MediaQuery.of(context).size.width;
     return FutureBuilder(
       future: getSettings(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                "SEEVIO",
-                style: TextStyle(
-                  fontFamily: "LibreFranklin",
-                ),
-              ),
-            ),
+            backgroundColor: Color.fromRGBO(4, 44, 84, 1.0),
             body: Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 0,
+                  ),
+                  Image(
+                    image: AssetImage('assets/logo_back.png'),
+                    height: 200,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RaisedButton(
-                        child: Text("Romana"),
-                        onPressed: () {
-                          setState(() {
-                            locale = "ro-RO";
-                            setSettings();
-                          });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: SizedBox(
+                          width: appWidth * 0.45,
+                          height: appWidth * 0.45,
+                          child: RaisedButton(
+                            elevation: 30,
+                            color: Color.fromRGBO(32, 235, 166, 1.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)),
+                            child: Text(
+                              "Romana",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'LibreFranklin',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 24),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                locale = "ro-RO";
+                                setSettings();
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                      RaisedButton(
-                        child: Text("English"),
-                        onPressed: () {
-                          setState(() {
-                            locale = "en-US";
-                            setSettings();
-                          });
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: SizedBox(
+                          width: appWidth * 0.45,
+                          height: appWidth * 0.45,
+                          child: RaisedButton(
+                            elevation: 30,
+                            color: Color.fromRGBO(32, 235, 166, 1.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)),
+                            child: Text(
+                              "English",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'LibreFranklin',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 24),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                locale = "en-US";
+                                setSettings();
+                              });
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  RaisedButton(
-                    child: Text(locale == "ro-US"
-                        ? "Ce se afla in jurul tau?"
-                        : "What's around you?"),
-                    onPressed: () async {
-                      List<Result> results = await fetchNearbyPlaces(
-                        position: Position(
-                          latitude: 46.774514,
-                          longitude: 23.590110,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: SizedBox(
+                      width: appWidth * 0.6,
+                      height: appWidth * 0.45,
+                      child: RaisedButton(
+                        elevation: 30,
+                        color: Color.fromRGBO(32, 235, 166, 1.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
+                        child: Text(
+                          locale == "ro-US"
+                              ? "Ce se afla in jurul tau?"
+                              : "What's around you?",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'LibreFranklin',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 24),
                         ),
-                        radious: 500,
-                        keyword: "bar",
-                      );
-                      _playT2S(results);
-                    },
+                        onPressed: () async {
+                          List<Result> results = await fetchNearbyPlaces(
+                            position: Position(
+                              latitude: 46.774514,
+                              longitude: 23.590110,
+                            ),
+                            radious: 500,
+                            keyword: "bar",
+                          );
+                          _playT2S(results);
+                        },
+                      ),
+                    ),
                   ),
-                  RaisedButton(
-                    child: const Text("Stop text to speech"),
-                    onPressed: () async {
-                      await widget.flutterTts.stop();
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: SizedBox(
+                      width: appWidth * 0.6,
+                      height: appWidth * 0.45,
+                      child: RaisedButton(
+                        elevation: 30,
+                        color: Color.fromRGBO(32, 235, 166, 1.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40)),
+                        child: const Text(
+                          "Stop text to speech",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'LibreFranklin',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 24),
+                        ),
+                        onPressed: () async {
+                          await widget.flutterTts.stop();
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),

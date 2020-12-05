@@ -24,10 +24,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+ 
+  assets:
+        - assets/logo_back.png
 
   fonts:
-    - family: LibreFrankin
+    - family: LibreFranklin
       fonts: 
         - asset: assets/LibreFranklin-Bold.ttf
-        - asset: assets/LibreFranklin-Light.ttf
+          weight: 700
         - asset: assets/LibreFranklin-Medium.ttf
+        - asset: assets/LibreFranklin-Light.ttf
+          style: italic
