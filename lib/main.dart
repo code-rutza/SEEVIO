@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Seevio',
+      title: 'SEEVIO',
       theme: ThemeData(
         primaryColor: Color.fromRGBO(32, 235, 166, 1.0),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -62,7 +62,6 @@ class _SeevioHomeState extends State<SeevioHome> {
     await widget.flutterTts.setLanguage(locale);
     await widget.flutterTts.setSpeechRate(1.5);
     await widget.flutterTts.setPitch(1.2);
-    await widget.flutterTts.awaitSpeakCompletion(true);
 
     return true;
   }
@@ -160,7 +159,7 @@ class _SeevioHomeState extends State<SeevioHome> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: SizedBox(
-                      width: appWidth * 0.6,
+                      width: appWidth * 0.65,
                       height: appWidth * 0.45,
                       child: RaisedButton(
                         elevation: 30,
@@ -168,8 +167,8 @@ class _SeevioHomeState extends State<SeevioHome> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40)),
                         child: Text(
-                          locale == "ro-US"
-                              ? "Ce se afla in jurul tau?"
+                          locale == "ro-RO"
+                              ? "Ce se află în jurul tău?"
                               : "What's around you?",
                           style: TextStyle(
                               color: Color.fromARGB(255, 20, 20, 20),
@@ -194,15 +193,17 @@ class _SeevioHomeState extends State<SeevioHome> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: SizedBox(
-                      width: appWidth * 0.6,
+                      width: appWidth * 0.65,
                       height: appWidth * 0.45,
                       child: RaisedButton(
                         elevation: 30,
                         color: Color.fromRGBO(32, 235, 166, 1.0),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40)),
-                        child: const Text(
-                          "Stop text to speech",
+                        child: Text(
+                          locale == "ro-RO"
+                              ? "Oprește Text to Speech"
+                              : "Stop Text to Speech",
                           style: TextStyle(
                               color: Color.fromARGB(255, 20, 20, 20),
                               fontFamily: 'LibreFranklin',
