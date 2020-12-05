@@ -51,8 +51,10 @@ class _SeevioHomeState extends State<SeevioHome> {
 
   Future<bool> getSettings() async {
     /// Get the seetings
-    /// 
+    ///
     /// Returns [true] when done
+    if (loaded) return true;
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       String _settings = prefs.getString(SP_KEY_SETTINGS);
@@ -65,8 +67,6 @@ class _SeevioHomeState extends State<SeevioHome> {
         locale = "ro-RO";
       });
     }
-
-    if (loaded) return true;
 
     // Permissions
     await Permission.location.request();
@@ -93,7 +93,7 @@ class _SeevioHomeState extends State<SeevioHome> {
 
   Future<bool> setSettings() async {
     /// Save the seetings
-    /// 
+    ///
     /// Returns [true] when done
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(SP_KEY_SETTINGS, "$locale&");
@@ -139,7 +139,8 @@ class _SeevioHomeState extends State<SeevioHome> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: 24),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              await widget.flutterTts.setLanguage("ro-RO");
                               setState(() {
                                 locale = "ro-RO";
                                 setSettings();
@@ -166,7 +167,8 @@ class _SeevioHomeState extends State<SeevioHome> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: 24),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
+                              await widget.flutterTts.setLanguage("en-US");
                               setState(() {
                                 locale = "en-US";
                                 setSettings();
@@ -205,12 +207,15 @@ class _SeevioHomeState extends State<SeevioHome> {
                           );
 
                           while (undeOAjunsLaTTSPentruPOI < results.length) {
-                            var res = await widget.flutterTts
-                                .speak(results[undeOAjunsLaTTSPentruPOI].toStringWithLocale(locale));
+                            await widget.flutterTts.awaitSpeakCompletion(true);
+                            var res = await widget.flutterTts.speak(
+                                results[undeOAjunsLaTTSPentruPOI]
+                                    .toStringWithLocale(locale));
                             if (res == 1) {
                               ++undeOAjunsLaTTSPentruPOI;
                             }
                             if (undeOAjunsLaTTSPentruPOI == results.length) {
+                              await widget.flutterTts.awaitSpeakCompletion(false);
                               undeOAjunsLaTTSPentruPOI = 0;
                             }
                           }

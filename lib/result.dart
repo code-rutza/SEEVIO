@@ -13,10 +13,10 @@ class Result {
 
   String toStringWithLocale(String locale) {
     Map<String, String> ro = {
-      "left": "in stânga",
-      "right": "in dreapta",
-      "front": "in față",
-      "back": "in spate",
+      "left": "în stânga",
+      "right": "în dreapta",
+      "front": "în față",
+      "back": "în spate",
     };
 
     Map<String, String> en = {
@@ -28,7 +28,7 @@ class Result {
 
     switch (locale) {
       case "ro-RO":
-        return "${this.name} e ${ro[this.relativeDirection]} la ${this.distanceFromUser} metrii";
+        return "${this.name} este ${ro[this.relativeDirection]} la ${this.distanceFromUser} de metrii";
         break;
       default: //en-US
         return "${this.name} is ${en[this.relativeDirection]} at ${this.distanceFromUser} metres";

@@ -15,7 +15,7 @@ int getDistance(Position userPos, double lat, double long) {
   /// [lat] - Point Of Interest latitude
   /// [long] - Point Of Interest longitude
   ///
-  /// Returns [int] - distance in meters
+  /// Returns [int] - distance in meters (rounded to x00 / x50)
   ///
   /// Explaination: https://www.movable-type.co.uk/scripts/latlong.html
 
@@ -35,9 +35,12 @@ int getDistance(Position userPos, double lat, double long) {
 
   double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
-  double distance = R * c;
+  double _distance = R * c;
+  int distance = _distance.toInt().abs();
 
-  return distance.toInt().abs();
+  if (distance % 50 > 25) {
+    return ((distance ~/ 50 + 1) * 50);
+  } else return (distance ~/ 50 * 50);
 }
 
 String getDirection(Position userPos, double lat, double long) {
