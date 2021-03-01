@@ -4,8 +4,7 @@ import 'dart:math' show pi, sin, cos, atan2, sqrt;
 import 'package:geolocator/geolocator.dart';
 import 'package:SEEVIO/result.dart';
 
-// Pls no ciorderino, ii restricted pe Places pls be kind
-const API_KEY = "AIzaSyCGnsjLXhRfb86sDaOH6X7E3sgAtcaiKd8";
+const API_KEY = "gcp_maps_api_key_with_places_enabled";
 const BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch";
 
 int getDistance(Position userPos, double lat, double long) {
